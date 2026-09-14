@@ -1,0 +1,24 @@
+---
+name: "People Toolkit"
+guid: "6c2092ad-cc5e-412e-8b84-639f879db2e7"
+version: "1.0.0.0"
+targetAbi: "10.11.0.0"
+framework: "net9.0"
+overview: "Manage People on any item, including Photos (Jellyfin 10.11.x only)"
+description: >
+  Add, rename, delete and browse People on any Jellyfin item, including
+  Photos and Videos that don't natively support People. Includes a
+  gallery view and orphan cleanup tools.
+
+  Compatible with Jellyfin 10.11.x only. NOT tested or supported on
+  Jellyfin 12.0+, which introduced a new database schema — this plugin
+  writes directly to internal tables and may break on newer versions.
+category: "General"
+owner: "ghalva69"
+artifacts:
+- "Jellyfin.Plugin.PeopleToolkit.dll"
+changelog: >
+  1.0.0.0: Initial release. Add/read People on any item (including
+  Photos), rename and delete People library-wide with image handling,
+  create People directly, browse all People in a gallery, and clean up
+  orphaned entries.

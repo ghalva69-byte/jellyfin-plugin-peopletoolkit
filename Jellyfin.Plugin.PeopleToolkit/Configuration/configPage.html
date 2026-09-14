@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>People Toolkit</title>
+</head>
+<body>
+    <div id="PeopleToolkitConfigPage" data-role="page" class="page type-interior pluginConfigurationPage" data-require="emby-input,emby-button">
+        <div data-role="content">
+            <div class="content-primary">
+                <h2>People Toolkit</h2>
+
+                <div>
+                    <button type="button" class="pt-tab-button" data-tab="photo">People on photo</button>
+                    <button type="button" class="pt-tab-button" data-tab="video">People on video</button>
+                    <button type="button" class="pt-tab-button" data-tab="create">Create</button>
+                    <button type="button" class="pt-tab-button" data-tab="rename">Rename</button>
+                    <button type="button" class="pt-tab-button" data-tab="delete">Delete</button>
+                    <button type="button" class="pt-tab-button" data-tab="orphans">Orphans</button>
+                    <button type="button" class="pt-tab-button" data-tab="gallery">Gallery</button>
+                </div>
+
+                <div id="TabPhoto" class="pt-panel" style="margin-top: 1em;">
+                    <div class="inputContainer">
+                        <label class="inputLabel inputLabelUnfocused" for="SearchTermP">Search a photo by name</label>
+                        <input id="SearchTermP" type="text" is="emby-input" placeholder="e.g. Carole" />
+                    </div>
+                    <div style="margin-top: 0.5em;">
+                        <button is="emby-button" type="button" id="SearchButtonP" class="raised button-submit block emby-button">
+                            <span>Search</span>
+                        </button>
+                    </div>
+                    <div id="SearchResultsP" style="display: flex; flex-wrap: wrap; gap: 0.75em; margin-top: 1em;"></div>
+
+                    <div style="margin-top: 1.5em;">
+                        <button is="emby-button" type="button" id="RefreshUntaggedButtonP" class="raised button-submit block emby-button">
+                            <span>Load untagged photos</span>
+                        </button>
+                    </div>
+                    <div id="UntaggedCountP" style="margin-top: 0.5em; opacity: 0.8;"></div>
+                    <div id="UntaggedResultsP" style="display: flex; flex-wrap: wrap; gap: 0.75em; margin-top: 1em;"></div>
+
+                    <div class="inputContainer" style="margin-top: 2em;">
+                        <label class="inputLabel inputLabelUnfocused" for="ItemIdP">Selected photo ID</label>
+                        <input id="ItemIdP" type="text" is="emby-input" readonly />
+                    </div>
+
+                    <div id="CurrentPeopleListP" style="margin-top: 1em; display: flex; flex-wrap: wrap; gap: 0.5em;"></div>
+
+                    <div class="inputContainer" style="margin-top: 1em; position: relative;">
+                        <label class="inputLabel inputLabelUnfocused" for="PeopleNamesP">People names (comma separated)</label>
+                        <input id="PeopleNamesP" type="text" is="emby-input" placeholder="e.g. Carole, Malo, Laura" autocomplete="off" />
+                        <div id="SuggestionsP" style="position: absolute; z-index: 100; background: #1c1c1c; border: 1px solid #444; border-radius: 4px; width: 100%; max-height: 200px; overflow-y: auto; display: none;"></div>
+                        <div class="fieldDescription">Replaces the current list of people. Leave empty to clear all.</div>
+                    </div>
+
+                    <div style="margin-top: 1em;">
+                        <button is="emby-button" type="button" id="SaveButtonP" class="raised button-submit block emby-button">
+                            <span>Save</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="TabVideo" class="pt-panel" style="margin-top: 1em;">
+                    <div class="inputContainer">
+                        <label class="inputLabel inputLabelUnfocused" for="SearchTermV">Search a video by name</label>
+                        <input id="SearchTermV" type="text" is="emby-input" placeholder="e.g. Vacation 2020" />
+                    </div>
+                    <div style="margin-top: 0.5em;">
+                        <button is="emby-button" type="button" id="SearchButtonV" class="raised button-submit block emby-button">
+                            <span>Search</span>
+                        </button>
+                    </div>
+                    <div id="SearchResultsV" style="display: flex; flex-wrap: wrap; gap: 0.75em; margin-top: 1em;"></div>
+
+                    <div style="margin-top: 1.5em;">
+                        <button is="emby-button" type="button" id="RefreshUntaggedButtonV" class="raised button-submit block emby-button">
+                            <span>Load untagged videos</span>
+                        </button>
+                    </div>
+                    <div id="UntaggedCountV" style="margin-top: 0.5em; opacity: 0.8;"></div>
+                    <div id="UntaggedResultsV" style="display: flex; flex-wrap: wrap; gap: 0.75em; margin-top: 1em;"></div>
+
+                    <div class="inputContainer" style="margin-top: 2em;">
+                        <label class="inputLabel inputLabelUnfocused" for="ItemIdV">Selected video ID</label>
+                        <input id="ItemIdV" type="text" is="emby-input" readonly />
+                    </div>
+
+                    <div id="CurrentPeopleListV" style="margin-top: 1em; display: flex; flex-wrap: wrap; gap: 0.5em;"></div>
+
+                    <div class="inputContainer" style="margin-top: 1em; position: relative;">
+                        <label class="inputLabel inputLabelUnfocused" for="PeopleNamesV">People names (comma separated)</label>
+                        <input id="PeopleNamesV" type="text" is="emby-input" placeholder="e.g. Carole, Malo, Laura" autocomplete="off" />
+                        <div id="SuggestionsV" style="position: absolute; z-index: 100; background: #1c1c1c; border: 1px solid #444; border-radius: 4px; width: 100%; max-height: 200px; overflow-y: auto; display: none;"></div>
+                        <div class="fieldDescription">Replaces the current list of people. Leave empty to clear all.</div>
+                    </div>
+
+                    <div style="margin-top: 1em;">
+                        <button is="emby-button" type="button" id="SaveButtonV" class="raised button-submit block emby-button">
+                            <span>Save</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="TabCreate" class="pt-panel" style="margin-top: 1em;">
+                    <h3>Create a new person</h3>
+                    <div class="inputContainer">
+                        <label class="inputLabel inputLabelUnfocused" for="CreateNameInput">Name</label>
+                        <input id="CreateNameInput" type="text" is="emby-input" placeholder="e.g. Carole" autocomplete="off" />
+                    </div>
+                    <div style="margin-top: 1em;">
+                        <button is="emby-button" type="button" id="CreateSubmitButton" class="raised button-submit block emby-button">
+                            <span>Create</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="TabRename" class="pt-panel" style="margin-top: 1em;">
+                    <h3>Rename a person (everywhere in the library)</h3>
+                    <div class="inputContainer" style="position: relative;">
+                        <label class="inputLabel inputLabelUnfocused" for="RenameSearchTerm">Person to rename</label>
+                        <input id="RenameSearchTerm" type="text" is="emby-input" placeholder="Type to search..." autocomplete="off" />
+                        <div id="RenameSuggestions" style="position: absolute; z-index: 100; background: #1c1c1c; border: 1px solid #444; border-radius: 4px; width: 100%; max-height: 200px; overflow-y: auto; display: none;"></div>
+                    </div>
+                    <div class="inputContainer" style="margin-top: 1em;">
+                        <label class="inputLabel inputLabelUnfocused" for="RenameNewName">New name</label>
+                        <input id="RenameNewName" type="text" is="emby-input" placeholder="New name" />
+                    </div>
+                    <div style="margin-top: 1em;">
+                        <button is="emby-button" type="button" id="RenameSubmitButton" class="raised button-submit block emby-button">
+                            <span>Rename</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="TabDelete" class="pt-panel" style="margin-top: 1em;">
+                    <h3>Delete a person (everywhere in the library)</h3>
+                    <div class="inputContainer" style="position: relative;">
+                        <label class="inputLabel inputLabelUnfocused" for="DeleteSearchTerm">Person to delete</label>
+                        <input id="DeleteSearchTerm" type="text" is="emby-input" placeholder="Type to search..." autocomplete="off" />
+                        <div id="DeleteSuggestions" style="position: absolute; z-index: 100; background: #1c1c1c; border: 1px solid #444; border-radius: 4px; width: 100%; max-height: 200px; overflow-y: auto; display: none;"></div>
+                    </div>
+                    <div style="margin-top: 1em;">
+                        <button is="emby-button" type="button" id="DeleteSubmitButton" class="raised button-submit block emby-button">
+                            <span>Delete</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="TabOrphans" class="pt-panel" style="margin-top: 1em;">
+                    <h3>Orphaned people (no link to any photo or video)</h3>
+                    <button is="emby-button" type="button" id="RefreshOrphansButton" class="raised button-submit block emby-button">
+                        <span>Load orphans</span>
+                    </button>
+                    <div id="OrphansCount" style="margin-top: 0.5em; opacity: 0.8;"></div>
+                    <div id="OrphansList" style="margin-top: 1em;"></div>
+                    <div style="margin-top: 1em;">
+                        <button is="emby-button" type="button" id="DeleteOrphansButton" class="raised button-submit block emby-button">
+                            <span>Delete selection</span>
+                        </button>
+                    </div>
+
+                    <hr style="margin: 2em 0; opacity: 0.2;" />
+
+                    <h3>Orphaned items (leftover entries not linked to the Peoples table)</h3>
+                    <button is="emby-button" type="button" id="RefreshOrphanedItemsButton" class="raised button-submit block emby-button">
+                        <span>Load orphaned items</span>
+                    </button>
+                    <div id="OrphanedItemsCount" style="margin-top: 0.5em; opacity: 0.8;"></div>
+                    <div id="OrphanedItemsList" style="margin-top: 1em;"></div>
+                    <div style="margin-top: 1em;">
+                        <button is="emby-button" type="button" id="DeleteOrphanedItemsButton" class="raised button-submit block emby-button">
+                            <span>Delete selection</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="TabGallery" class="pt-panel" style="margin-top: 1em;">
+                    <button is="emby-button" type="button" id="RefreshGalleryButton" class="raised button-submit block emby-button">
+                        <span>Load gallery</span>
+                    </button>
+                    <div id="GalleryCount" style="margin-top: 0.5em; opacity: 0.8;"></div>
+                    <div id="GalleryResults" style="display: flex; flex-wrap: wrap; gap: 0.75em; margin-top: 1em;"></div>
+                </div>
+
+                <div id="StatusMessage" style="margin-top: 1.5em; white-space: pre-wrap;"></div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            var pt_allPeople = [];
+            var pt_renameSelectedId = null;
+            var pt_deleteSelectedId = null;
+
+            function pt_showStatus(text) {
+                document.querySelector('#StatusMessage').textContent = text;
+            }
+
+            function pt_addDashes(id) {
+                if (!id || id.indexOf('-') !== -1) {
+                    return id;
+                }
+                return id.substring(0, 8) + '-' + id.substring(8, 12) + '-' + id.substring(12, 16) + '-' + id.substring(16, 20) + '-' + id.substring(20);
+            }
+
+            function pt_renderResults(containerEl, items, onSelect) {
+                containerEl.innerHTML = '';
+                items.forEach(function (item) {
+                    var div = document.createElement('div');
+                    div.style.width = '120px';
+                    div.style.cursor = 'pointer';
+                    div.style.textAlign = 'center';
+
+                    var img = document.createElement('img');
+                    img.src = ApiClient.getImageUrl(item.Id, { type: 'Primary', maxWidth: 240 });
+                    img.style.width = '120px';
+                    img.style.height = '120px';
+                    img.style.objectFit = 'cover';
+                    img.style.borderRadius = '6px';
+
+                    var nameDiv = document.createElement('div');
+                    nameDiv.style.fontSize = '0.85em';
+                    nameDiv.style.marginTop = '0.25em';
+                    nameDiv.textContent = item.Name;
+
+                    div.appendChild(img);
+                    div.appendChild(nameDiv);
+                    div.addEventListener('click', function () {
+                        onSelect(item.Id, item.Name);
+                    });
+
+                    containerEl.appendChild(div);
+                });
+            }
+
+            // --- Tabs ---
+            var pt_tabs = ['photo', 'video', 'create', 'rename', 'delete', 'orphans', 'gallery'];
+            var pt_panelIds = {
+                photo: '#TabPhoto',
+                video: '#TabVideo',
+                rename: '#TabRename',
+                delete: '#TabDelete',
+                orphans: '#TabOrphans',
+                create: '#TabCreate',
+                gallery: '#TabGallery'
+            };
+
+            function pt_applyTabStyle(btn, isActive) {
+                btn.style.setProperty('padding', '0.6em 1.2em', 'important');
+                btn.style.setProperty('cursor', 'pointer', 'important');
+                btn.style.setProperty('border', 'none', 'important');
+                btn.style.setProperty('font-size', '1em', 'important');
+                btn.style.setProperty('border-radius', '4px 4px 0 0', 'important');
+                if (isActive) {
+                    btn.style.setProperty('background', '#00a4dc', 'important');
+                    btn.style.setProperty('color', '#fff', 'important');
+                } else {
+                    btn.style.setProperty('background', 'transparent', 'important');
+                    btn.style.setProperty('color', '#aaa', 'important');
+                }
+            }
+
+            function pt_setActiveTab(tab) {
+                // Hide ALL panels first, no exceptions, to avoid any visual leftover.
+                document.querySelectorAll('.pt-panel').forEach(function (panel) {
+                    panel.style.setProperty('display', 'none', 'important');
+                });
+
+                pt_tabs.forEach(function (t) {
+                    var btn = document.querySelector('[data-tab="' + t + '"]');
+                    pt_applyTabStyle(btn, t === tab);
+                });
+
+                var target = document.querySelector(pt_panelIds[tab]);
+                if (target) {
+                    target.style.setProperty('display', 'block', 'important');
+                }
+
+                pt_showStatus('');
+            }
+
+            document.querySelectorAll('.pt-tab-button').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    pt_setActiveTab(btn.getAttribute('data-tab'));
+                });
+            });
+
+            pt_setActiveTab('photo');
+
+            // --- Load the list of people (from our own storage) ---
+            function pt_loadAllPeople() {
+                ApiClient.ajax({
+                    type: 'GET',
+                    url: ApiClient.getUrl('PeopleToolkit/AllPeople'),
+                    dataType: 'json'
+                }).then(function (result) {
+                    var items = result.Items || [];
+                    pt_allPeople = items.filter(function (p) { return p.Name; }).map(function (p) {
+                        return { Id: p.Id, Name: p.Name };
+                    });
+                }).catch(function () {
+                    pt_allPeople = [];
+                });
+            }
+
+            // --- Multi-value autocomplete ("People names" field) ---
+            function pt_currentSegment(input) {
+                var value = input.value;
+                var lastComma = value.lastIndexOf(',');
+                return {
+                    prefix: lastComma >= 0 ? value.substring(0, lastComma + 1) + ' ' : '',
+                    text: (lastComma >= 0 ? value.substring(lastComma + 1) : value).trim()
+                };
+            }
+
+            function pt_setupMultiAutocomplete(inputId, suggestionsId) {
+                var input = document.querySelector('#' + inputId);
+                var suggestionsEl = document.querySelector('#' + suggestionsId);
+
+                input.addEventListener('input', function () {
+                    var seg = pt_currentSegment(input);
+                    suggestionsEl.innerHTML = '';
+
+                    if (seg.text.length < 1) {
+                        suggestionsEl.style.display = 'none';
+                        return;
+                    }
+
+                    var lowerText = seg.text.toLowerCase();
+                    var matches = pt_allPeople.filter(function (p) {
+                        return p.Name.toLowerCase().indexOf(lowerText) !== -1;
+                    }).slice(0, 8);
+
+                    if (matches.length === 0) {
+                        suggestionsEl.style.display = 'none';
+                        return;
+                    }
+
+                    matches.forEach(function (p) {
+                        var div = document.createElement('div');
+                        div.style.padding = '0.5em 0.75em';
+                        div.style.cursor = 'pointer';
+                        div.textContent = p.Name;
+                        div.addEventListener('click', function () {
+                            input.value = seg.prefix + p.Name + ', ';
+                            suggestionsEl.style.display = 'none';
+                            input.focus();
+                        });
+                        suggestionsEl.appendChild(div);
+                    });
+
+                    suggestionsEl.style.display = 'block';
+                });
+            }
+
+            pt_setupMultiAutocomplete('PeopleNamesP', 'SuggestionsP');
+            pt_setupMultiAutocomplete('PeopleNamesV', 'SuggestionsV');
+
+            // --- Single-value autocomplete (Rename / Delete) ---
+            function pt_setupSingleAutocomplete(inputId, suggestionsId, onSelect) {
+                var input = document.querySelector('#' + inputId);
+                var suggestionsEl = document.querySelector('#' + suggestionsId);
+
+                input.addEventListener('input', function () {
+                    onSelect(null);
+                    var text = input.value.trim().toLowerCase();
+                    suggestionsEl.innerHTML = '';
+
+                    if (text.length < 1) {
+                        suggestionsEl.style.display = 'none';
+                        return;
+                    }
+
+                    var matches = pt_allPeople.filter(function (p) {
+                        return p.Name.toLowerCase().indexOf(text) !== -1;
+                    }).slice(0, 8);
+
+                    if (matches.length === 0) {
+                        suggestionsEl.style.display = 'none';
+                        return;
+                    }
+
+                    matches.forEach(function (p) {
+                        var div = document.createElement('div');
+                        div.style.padding = '0.5em 0.75em';
+                        div.style.cursor = 'pointer';
+                        div.textContent = p.Name;
+                        div.addEventListener('click', function () {
+                            input.value = p.Name;
+                            suggestionsEl.style.display = 'none';
+                            onSelect(p.Id);
+                        });
+                        suggestionsEl.appendChild(div);
+                    });
+
+                    suggestionsEl.style.display = 'block';
+                });
+            }
+
+            pt_setupSingleAutocomplete('RenameSearchTerm', 'RenameSuggestions', function (id) { pt_renameSelectedId = id; });
+            pt_setupSingleAutocomplete('DeleteSearchTerm', 'DeleteSuggestions', function (id) { pt_deleteSelectedId = id; });
+
+            document.addEventListener('click', function (e) {
+                ['SuggestionsP', 'SuggestionsV', 'RenameSuggestions', 'DeleteSuggestions'].forEach(function (id) {
+                    var input = e.target.closest('.inputContainer') ? e.target : null;
+                    var suggestionsEl = document.querySelector('#' + id);
+                    if (suggestionsEl && !suggestionsEl.contains(e.target) && e.target !== suggestionsEl.previousElementSibling) {
+                        suggestionsEl.style.display = 'none';
+                    }
+                });
+            });
+
+            // --- Generic logic per type (Photo / Video) ---
+            function pt_setupTypeTab(suffix, itemTypes) {
+                var searchTerm = document.querySelector('#SearchTerm' + suffix);
+                var searchButton = document.querySelector('#SearchButton' + suffix);
+                var searchResults = document.querySelector('#SearchResults' + suffix);
+                var refreshUntaggedButton = document.querySelector('#RefreshUntaggedButton' + suffix);
+                var untaggedCount = document.querySelector('#UntaggedCount' + suffix);
+                var untaggedResults = document.querySelector('#UntaggedResults' + suffix);
+                var itemIdField = document.querySelector('#ItemId' + suffix);
+                var currentPeopleList = document.querySelector('#CurrentPeopleList' + suffix);
+                var peopleNames = document.querySelector('#PeopleNames' + suffix);
+                var saveButton = document.querySelector('#SaveButton' + suffix);
+
+                var currentPeople = [];
+
+                function syncPeopleNamesField() {
+                    peopleNames.value = currentPeople.map(function (p) { return p.Name; }).join(', ');
+                }
+
+                function renderCurrentPeople() {
+                    currentPeopleList.innerHTML = '';
+                    currentPeople.forEach(function (p, index) {
+                        var chip = document.createElement('div');
+                        chip.draggable = true;
+                        chip.style.background = '#2a2a2a';
+                        chip.style.borderRadius = '16px';
+                        chip.style.padding = '0.3em 0.6em 0.3em 0.8em';
+                        chip.style.display = 'flex';
+                        chip.style.alignItems = 'center';
+                        chip.style.gap = '0.4em';
+                        chip.style.cursor = 'grab';
+                        chip.style.borderLeft = '2px solid transparent';
+
+                        var nameSpan = document.createElement('span');
+                        nameSpan.textContent = p.Name;
+
+                        var removeBtn = document.createElement('span');
+                        removeBtn.textContent = '\u00d7';
+                        removeBtn.style.cursor = 'pointer';
+                        removeBtn.style.opacity = '0';
+                        removeBtn.style.transition = 'opacity 0.15s';
+                        removeBtn.style.fontWeight = 'bold';
+                        removeBtn.style.lineHeight = '1';
+                        removeBtn.title = 'Remove';
+                        removeBtn.addEventListener('click', function (e) {
+                            e.stopPropagation();
+                            var currentIndex = Array.prototype.indexOf.call(currentPeopleList.children, chip);
+                            currentPeople.splice(currentIndex, 1);
+                            renderCurrentPeople();
+                            syncPeopleNamesField();
+                        });
+
+                        chip.addEventListener('mouseenter', function () { removeBtn.style.opacity = '1'; });
+                        chip.addEventListener('mouseleave', function () { removeBtn.style.opacity = '0'; });
+
+                        chip.addEventListener('dragstart', function (e) {
+                            e.dataTransfer.setData('text/plain', String(index));
+                            chip.style.opacity = '0.4';
+                        });
+                        chip.addEventListener('dragend', function () {
+                            chip.style.opacity = '1';
+                        });
+                        chip.addEventListener('dragover', function (e) {
+                            e.preventDefault();
+                            chip.style.borderLeft = '2px solid #00a4dc';
+                        });
+                        chip.addEventListener('dragleave', function () {
+                            chip.style.borderLeft = '2px solid transparent';
+                        });
+                        chip.addEventListener('drop', function (e) {
+                            e.preventDefault();
+                            chip.style.borderLeft = '2px solid transparent';
+                            var fromIndex = parseInt(e.dataTransfer.getData('text/plain'), 10);
+                            var toIndex = Array.prototype.indexOf.call(currentPeopleList.children, chip);
+                            if (fromIndex === toIndex || isNaN(fromIndex)) {
+                                return;
+                            }
+                            var moved = currentPeople.splice(fromIndex, 1)[0];
+                            currentPeople.splice(toIndex, 0, moved);
+                            renderCurrentPeople();
+                            syncPeopleNamesField();
+                        });
+
+                        chip.appendChild(nameSpan);
+                        chip.appendChild(removeBtn);
+                        currentPeopleList.appendChild(chip);
+                    });
+                }
+
+                function loadPeopleForItem(itemId, itemName) {
+                    itemIdField.value = itemId;
+                    Dashboard.showLoadingMsg();
+                    ApiClient.ajax({
+                        type: 'GET',
+                        url: ApiClient.getUrl('PeopleToolkit/GetPeople/' + itemId),
+                        dataType: 'json'
+                    }).then(function (result) {
+                        Dashboard.hideLoadingMsg();
+                        var people = result.People || [];
+                        currentPeople = people.slice();
+                        renderCurrentPeople();
+                        syncPeopleNamesField();
+                        pt_showStatus((itemName || result.ItemName) + ' — current people: ' + (currentPeople.map(function (p) { return p.Name; }).join(', ') || '(none)'));
+                    }).catch(function (err) {
+                        Dashboard.hideLoadingMsg();
+                        pt_showStatus('Error: ' + (err && err.message ? err.message : 'request failed'));
+                    });
+                }
+
+                searchButton.addEventListener('click', function () {
+                    var term = searchTerm.value.trim();
+                    searchResults.innerHTML = '';
+
+                    if (!term) {
+                        pt_showStatus('Type a name to search.');
+                        return;
+                    }
+
+                    Dashboard.showLoadingMsg();
+                    var userId = ApiClient.getCurrentUserId();
+                    ApiClient.getItems(userId, {
+                        searchTerm: term,
+                        includeItemTypes: itemTypes,
+                        recursive: true,
+                        limit: 24,
+                        fields: 'PrimaryImageAspectRatio'
+                    }).then(function (result) {
+                        Dashboard.hideLoadingMsg();
+                        var items = result.Items || [];
+                        if (items.length === 0) {
+                            pt_showStatus('No results for "' + term + '".');
+                            return;
+                        }
+                        pt_renderResults(searchResults, items, loadPeopleForItem);
+                        pt_showStatus(items.length + ' result(s). Click to select (people load automatically).');
+                    }).catch(function (err) {
+                        Dashboard.hideLoadingMsg();
+                        pt_showStatus('Search error: ' + (err && err.message ? err.message : 'request failed'));
+                    });
+                });
+
+                refreshUntaggedButton.addEventListener('click', function () {
+                    untaggedResults.innerHTML = '';
+                    untaggedCount.textContent = '';
+
+                    Dashboard.showLoadingMsg();
+                    ApiClient.ajax({
+                        type: 'GET',
+                        url: ApiClient.getUrl('PeopleToolkit/Untagged' + suffix + 's', { limit: 60 }),
+                        dataType: 'json'
+                    }).then(function (result) {
+                        Dashboard.hideLoadingMsg();
+                        var items = result.Items || [];
+                        untaggedCount.textContent = result.Total + ' untagged in total (60 max shown here).';
+                        if (items.length === 0) {
+                            pt_showStatus('Nothing untagged — all done!');
+                            return;
+                        }
+                        pt_renderResults(untaggedResults, items, loadPeopleForItem);
+                        pt_showStatus('Click to select (people load automatically).');
+                    }).catch(function (err) {
+                        Dashboard.hideLoadingMsg();
+                        pt_showStatus('Error: ' + (err && err.message ? err.message : 'request failed'));
+                    });
+                });
+
+                saveButton.addEventListener('click', function () {
+                    var itemId = itemIdField.value.trim();
+                    if (!itemId) {
+                        pt_showStatus('First select an item above.');
+                        return;
+                    }
+
+                    var names = peopleNames.value.split(',')
+                        .map(function (n) { return n.trim(); })
+                        .filter(function (n) { return n.length > 0; });
+
+                    Dashboard.showLoadingMsg();
+                    ApiClient.ajax({
+                        type: 'POST',
+                        url: ApiClient.getUrl('PeopleToolkit/SetPeople'),
+                        data: JSON.stringify({ ItemId: itemId, PeopleNames: names }),
+                        contentType: 'application/json',
+                        dataType: 'json'
+                    }).then(function (result) {
+                        Dashboard.hideLoadingMsg();
+                        pt_showStatus('Saved. ' + result.ItemName + ' — people: ' + result.PeopleReadBackNames.join(', '));
+                        pt_loadAllPeople();
+                        loadPeopleForItem(itemId, result.ItemName);
+                    }).catch(function (err) {
+                        Dashboard.hideLoadingMsg();
+                        pt_showStatus('Error: ' + (err && err.message ? err.message : 'request failed'));
+                    });
+                });
+            }
+
+            pt_setupTypeTab('P', 'Photo');
+            pt_setupTypeTab('V', 'Movie,Episode,Video,MusicVideo');
+
+            // --- Rename (global) ---
+            document.querySelector('#RenameSubmitButton').addEventListener('click', function () {
+                if (!pt_renameSelectedId) {
+                    pt_showStatus('First select an existing person from the suggestions.');
+                    return;
+                }
+
+                var newName = document.querySelector('#RenameNewName').value.trim();
+                if (!newName) {
+                    pt_showStatus('Type a new name.');
+                    return;
+                }
+
+                var oldName = document.querySelector('#RenameSearchTerm').value.trim();
+                if (newName === oldName) {
+                    pt_showStatus('The new name is identical to the old one.');
+                    return;
+                }
+
+                var duplicate = pt_allPeople.find(function (p) {
+                    return p.Name.toLowerCase() === newName.toLowerCase();
+                });
+
+                var warningMsg = '';
+                if (duplicate) {
+                    warningMsg = 'Warning: "' + newName + '" already exists as a separate person. Renaming "' + oldName + '" to this name does NOT necessarily merge them (worth checking afterwards).\n\n';
+                }
+
+                var confirmed = confirm(warningMsg + 'Rename "' + oldName + '" to "' + newName + '"? This change will apply to ALL photos/videos where "' + oldName + '" appears.');
+                if (!confirmed) {
+                    return;
+                }
+
+                Dashboard.showLoadingMsg();
+                ApiClient.ajax({
+                    type: 'POST',
+                    url: ApiClient.getUrl('PeopleToolkit/RenamePerson'),
+                    data: JSON.stringify({ PersonId: pt_addDashes(pt_renameSelectedId), NewName: newName }),
+                    contentType: 'application/json',
+                    dataType: 'json'
+                }).then(function (result) {
+                    Dashboard.hideLoadingMsg();
+                    pt_showStatus('Renamed: "' + result.OldName + '" → "' + result.NewName + '" (everywhere).');
+                    document.querySelector('#RenameSearchTerm').value = '';
+                    document.querySelector('#RenameNewName').value = '';
+                    pt_renameSelectedId = null;
+                    pt_loadAllPeople();
+                }).catch(function (err) {
+                    Dashboard.hideLoadingMsg();
+                    pt_showStatus('Error: ' + (err && err.message ? err.message : 'request failed'));
+                });
+            });
+
+            // --- Delete (global) ---
+            document.querySelector('#DeleteSubmitButton').addEventListener('click', function () {
+                if (!pt_deleteSelectedId) {
+                    pt_showStatus('First select an existing person from the suggestions.');
+                    return;
+                }
+
+                var name = document.querySelector('#DeleteSearchTerm').value.trim();
+                var confirmed = confirm('Permanently delete "' + name + '"? It will disappear from ALL photos/videos where it appears. This action is irreversible.');
+                if (!confirmed) {
+                    return;
+                }
+
+                Dashboard.showLoadingMsg();
+                ApiClient.ajax({
+                    type: 'POST',
+                    url: ApiClient.getUrl('PeopleToolkit/DeletePerson/' + pt_addDashes(pt_deleteSelectedId)),
+                    dataType: 'json'
+                }).then(function (result) {
+                    Dashboard.hideLoadingMsg();
+                    pt_showStatus('Permanently deleted: "' + result.Name + '".');
+                    document.querySelector('#DeleteSearchTerm').value = '';
+                    pt_deleteSelectedId = null;
+                    pt_loadAllPeople();
+                }).catch(function (err) {
+                    Dashboard.hideLoadingMsg();
+                    pt_showStatus('Error: ' + (err && err.message ? err.message : 'request failed'));
+                });
+            });
+
+            // --- Orphans ---
+            var pt_orphans = [];
+
+            document.querySelector('#RefreshOrphansButton').addEventListener('click', function () {
+                var listEl = document.querySelector('#OrphansList');
+                var countEl = document.querySelector('#OrphansCount');
+                listEl.innerHTML = '';
+
+                Dashboard.showLoadingMsg();
+                ApiClient.ajax({
+                    type: 'GET',
+                    url: ApiClient.getUrl('PeopleToolkit/OrphanedPeople'),
+                    dataType: 'json'
+                }).then(function (result) {
+                    Dashboard.hideLoadingMsg();
+                    pt_orphans = result.Items || [];
+                    countEl.textContent = result.Total + ' orphaned person(s) found.';
+
+                    if (pt_orphans.length === 0) {
+                        pt_showStatus('No orphaned people — nothing to clean up.');
+                        return;
+                    }
+
+                    pt_orphans.forEach(function (p) {
+                        var row = document.createElement('div');
+                        row.style.padding = '0.3em 0';
+
+                        var checkbox = document.createElement('input');
+                        checkbox.type = 'checkbox';
+                        checkbox.value = p.Id;
+                        checkbox.className = 'pt-orphan-checkbox';
+                        checkbox.id = 'orphan-' + p.Id;
+                        checkbox.style.marginRight = '0.5em';
+
+                        var label = document.createElement('label');
+                        label.setAttribute('for', 'orphan-' + p.Id);
+                        label.textContent = p.Name;
+
+                        row.appendChild(checkbox);
+                        row.appendChild(label);
+                        listEl.appendChild(row);
+                    });
+
+                    pt_showStatus('Check the people to delete, then click "Delete selection".');
+                }).catch(function (err) {
+                    Dashboard.hideLoadingMsg();
+                    pt_showStatus('Error: ' + (err && err.message ? err.message : 'request failed'));
+                });
+            });
+
+            document.querySelector('#DeleteOrphansButton').addEventListener('click', function () {
+                var checked = Array.prototype.slice.call(document.querySelectorAll('.pt-orphan-checkbox:checked'));
+                if (checked.length === 0) {
+                    pt_showStatus('Check at least one person to delete.');
+                    return;
+                }
+
+                var ids = checked.map(function (cb) { return cb.value; });
+                var confirmed = confirm('Permanently delete ' + ids.length + ' orphaned person(s)? This action is irreversible.');
+                if (!confirmed) {
+                    return;
+                }
+
+                Dashboard.showLoadingMsg();
+                ApiClient.ajax({
+                    type: 'POST',
+                    url: ApiClient.getUrl('PeopleToolkit/DeletePeople'),
+                    data: JSON.stringify({ PersonIds: ids }),
+                    contentType: 'application/json',
+                    dataType: 'json'
+                }).then(function (result) {
+                    Dashboard.hideLoadingMsg();
+                    pt_showStatus(result.DeletedCount + ' person(s) deleted: ' + result.DeletedNames.join(', '));
+                    document.querySelector('#RefreshOrphansButton').click();
+                    pt_loadAllPeople();
+                }).catch(function (err) {
+                    Dashboard.hideLoadingMsg();
+                    pt_showStatus('Error: ' + (err && err.message ? err.message : 'request failed'));
+                });
+            });
+
+            // --- Orphaned items (leftover entries not in the Peoples table) ---
+            var pt_orphanedItems = [];
+
+            document.querySelector('#RefreshOrphanedItemsButton').addEventListener('click', function () {
+                var listEl = document.querySelector('#OrphanedItemsList');
+                var countEl = document.querySelector('#OrphanedItemsCount');
+                listEl.innerHTML = '';
+
+                Dashboard.showLoadingMsg();
+                ApiClient.ajax({
+                    type: 'GET',
+                    url: ApiClient.getUrl('PeopleToolkit/OrphanedItems'),
+                    dataType: 'json'
+                }).then(function (result) {
+                    Dashboard.hideLoadingMsg();
+                    pt_orphanedItems = result.Items || [];
+                    countEl.textContent = result.Total + ' orphaned item(s) found.';
+
+                    if (pt_orphanedItems.length === 0) {
+                        pt_showStatus('No orphaned items — nothing to clean up.');
+                        return;
+                    }
+
+                    pt_orphanedItems.forEach(function (p) {
+                        var row = document.createElement('div');
+                        row.style.padding = '0.3em 0';
+
+                        var checkbox = document.createElement('input');
+                        checkbox.type = 'checkbox';
+                        checkbox.value = p.Id;
+                        checkbox.className = 'pt-orphan-item-checkbox';
+                        checkbox.id = 'orphan-item-' + p.Id;
+                        checkbox.style.marginRight = '0.5em';
+
+                        var label = document.createElement('label');
+                        label.setAttribute('for', 'orphan-item-' + p.Id);
+                        label.textContent = p.Name;
+
+                        row.appendChild(checkbox);
+                        row.appendChild(label);
+                        listEl.appendChild(row);
+                    });
+
+                    pt_showStatus('Check the items to delete, then click "Delete selection".');
+                }).catch(function (err) {
+                    Dashboard.hideLoadingMsg();
+                    pt_showStatus('Error: ' + (err && err.message ? err.message : 'request failed'));
+                });
+            });
+
+            document.querySelector('#DeleteOrphanedItemsButton').addEventListener('click', function () {
+                var checked = Array.prototype.slice.call(document.querySelectorAll('.pt-orphan-item-checkbox:checked'));
+                if (checked.length === 0) {
+                    pt_showStatus('Check at least one item to delete.');
+                    return;
+                }
+
+                var ids = checked.map(function (cb) { return cb.value; });
+                var confirmed = confirm('Permanently delete ' + ids.length + ' orphaned item(s)? This action is irreversible.');
+                if (!confirmed) {
+                    return;
+                }
+
+                Dashboard.showLoadingMsg();
+                ApiClient.ajax({
+                    type: 'POST',
+                    url: ApiClient.getUrl('PeopleToolkit/DeleteOrphanedItems'),
+                    data: JSON.stringify({ ItemIds: ids }),
+                    contentType: 'application/json',
+                    dataType: 'json'
+                }).then(function (result) {
+                    Dashboard.hideLoadingMsg();
+                    pt_showStatus(result.DeletedCount + ' item(s) deleted: ' + result.DeletedNames.join(', '));
+                    document.querySelector('#RefreshOrphanedItemsButton').click();
+                }).catch(function (err) {
+                    Dashboard.hideLoadingMsg();
+                    pt_showStatus('Error: ' + (err && err.message ? err.message : 'request failed'));
+                });
+            });
+
+            // --- Create ---
+            document.querySelector('#CreateSubmitButton').addEventListener('click', function () {
+                var name = document.querySelector('#CreateNameInput').value.trim();
+                if (!name) {
+                    pt_showStatus('Type a name.');
+                    return;
+                }
+
+                Dashboard.showLoadingMsg();
+                ApiClient.ajax({
+                    type: 'POST',
+                    url: ApiClient.getUrl('PeopleToolkit/CreatePerson'),
+                    data: JSON.stringify({ Name: name }),
+                    contentType: 'application/json',
+                    dataType: 'json'
+                }).then(function (result) {
+                    Dashboard.hideLoadingMsg();
+                    if (result.AlreadyExisted) {
+                        pt_showStatus('"' + result.Name + '" already exists.');
+                    } else {
+                        pt_showStatus('"' + result.Name + '" created.');
+                        document.querySelector('#CreateNameInput').value = '';
+                    }
+                    pt_loadAllPeople();
+                }).catch(function (err) {
+                    Dashboard.hideLoadingMsg();
+                    pt_showStatus('Error: ' + (err && err.message ? err.message : 'request failed'));
+                });
+            });
+
+            // --- Gallery ---
+            document.querySelector('#RefreshGalleryButton').addEventListener('click', function () {
+                var resultsEl = document.querySelector('#GalleryResults');
+                var countEl = document.querySelector('#GalleryCount');
+                resultsEl.innerHTML = '';
+
+                Dashboard.showLoadingMsg();
+                ApiClient.ajax({
+                    type: 'GET',
+                    url: ApiClient.getUrl('PeopleToolkit/Gallery'),
+                    dataType: 'json'
+                }).then(function (result) {
+                    Dashboard.hideLoadingMsg();
+                    var items = result.Items || [];
+                    countEl.textContent = result.Total + ' people(s).';
+
+                    items.forEach(function (p) {
+                        var div = document.createElement('div');
+                        div.style.width = '120px';
+                        div.style.textAlign = 'center';
+
+                        var img = document.createElement('img');
+                        img.src = ApiClient.getImageUrl(p.Id, { type: 'Primary', maxWidth: 240 });
+                        img.style.width = '120px';
+                        img.style.height = '120px';
+                        img.style.objectFit = 'cover';
+                        img.style.borderRadius = '6px';
+                        img.style.background = '#2a2a2a';
+
+                        var nameDiv = document.createElement('div');
+                        nameDiv.style.fontSize = '0.85em';
+                        nameDiv.style.marginTop = '0.25em';
+                        nameDiv.textContent = p.Name;
+
+                        div.appendChild(img);
+                        div.appendChild(nameDiv);
+                        resultsEl.appendChild(div);
+                    });
+                }).catch(function (err) {
+                    Dashboard.hideLoadingMsg();
+                    pt_showStatus('Error: ' + (err && err.message ? err.message : 'request failed'));
+                });
+            });
+
+            document.querySelector('#PeopleToolkitConfigPage').addEventListener('pageshow', function () {
+                pt_loadAllPeople();
+            });
+        </script>
+    </div>
+</body>
+</html>
