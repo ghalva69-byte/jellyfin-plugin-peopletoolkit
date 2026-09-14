@@ -410,7 +410,7 @@
             });
 
             // --- Generic logic per type (Photo / Video) ---
-            function pt_setupTypeTab(suffix, itemTypes) {
+            function pt_setupTypeTab(suffix, itemTypes, untaggedEndpoint) {
                 var searchTerm = document.querySelector('#SearchTerm' + suffix);
                 var searchButton = document.querySelector('#SearchButton' + suffix);
                 var searchResults = document.querySelector('#SearchResults' + suffix);
@@ -557,7 +557,7 @@
                     Dashboard.showLoadingMsg();
                     ApiClient.ajax({
                         type: 'GET',
-                        url: ApiClient.getUrl('PeopleToolkit/Untagged' + suffix + 's', { limit: 60 }),
+                        url: ApiClient.getUrl('PeopleToolkit/' + untaggedEndpoint, { limit: 60 }),
                         dataType: 'json'
                     }).then(function (result) {
                         Dashboard.hideLoadingMsg();
@@ -605,8 +605,8 @@
                 });
             }
 
-            pt_setupTypeTab('P', 'Photo');
-            pt_setupTypeTab('V', 'Movie,Episode,Video,MusicVideo');
+            pt_setupTypeTab('P', 'Photo', 'UntaggedPhotos');
+            pt_setupTypeTab('V', 'Movie,Episode,Video,MusicVideo', 'UntaggedVideos');
 
             // --- Rename (global) ---
             document.querySelector('#RenameSubmitButton').addEventListener('click', function () {

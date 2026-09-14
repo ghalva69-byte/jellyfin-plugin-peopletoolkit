@@ -104,20 +104,19 @@ public class PeopleToolkitController : ControllerBase
         }
     }
 
-    private void DeleteCachedPersonImage(string name)
+    private void DeletePersonEntityAndImage(string name)
     {
         try
         {
             var item = _libraryManager.GetPerson(name);
-            var path = item?.Path;
-            if (!string.IsNullOrEmpty(path) && Directory.Exists(path))
+            if (item is not null)
             {
-                Directory.Delete(path, true);
+                _libraryManager.DeleteItem(item, new DeleteOptions { DeleteFileLocation = true });
             }
         }
         catch (Exception ex)
         {
-            _logger.LogWarning(ex, "Could not delete cached image for person {Name}", name);
+            _logger.LogWarning(ex, "Could not delete person entity/image for {Name}", name);
         }
     }
 
@@ -159,7 +158,7 @@ public class PeopleToolkitController : ControllerBase
     /// <param name="request">The name of the person to create.</param>
     /// <returns>Diagnostic info about the operation.</returns>
     [HttpPost("CreatePerson")]
-    public ActionResult CreatePerson([FromBody] CreatePersonRequest request)
+    public async Task<ActionResult> CreatePerson([FromBody] CreatePersonRequest request)
     {
         var name = request.Name?.Trim();
         if (string.IsNullOrEmpty(name))
@@ -167,15 +166,31 @@ public class PeopleToolkitController : ControllerBase
             return BadRequest(new { Error = "Name is required" });
         }
 
-        var existing = _libraryManager.GetPerson(name);
-        if (existing is not null)
+        var db = await _dbContextFactory.CreateDbContextAsync().ConfigureAwait(false);
+        try
         {
-            return Ok(new { Created = false, AlreadyExisted = true, Name = name });
+            var existingRow = await db.Peoples.FirstOrDefaultAsync(p => p.Name == name).ConfigureAwait(false);
+            if (existingRow is not null)
+            {
+                return Ok(new { Created = false, AlreadyExisted = true, Name = name });
+            }
+
+            EnsurePersonExists(name);
+
+            db.Peoples.Add(new()
+            {
+                Id = Guid.NewGuid(),
+                Name = name,
+                PersonType = "Actor"
+            });
+            await db.SaveChangesAsync().ConfigureAwait(false);
+
+            return Ok(new { Created = true, AlreadyExisted = false, Name = name });
         }
-
-        EnsurePersonExists(name);
-
-        return Ok(new { Created = true, AlreadyExisted = false, Name = name });
+        finally
+        {
+            await db.DisposeAsync().ConfigureAwait(false);
+        }
     }
 
     /// <summary>
@@ -314,8 +329,18 @@ public class PeopleToolkitController : ControllerBase
             }
 
             var oldName = person.Name;
-            MoveCachedPersonImage(oldName, request.NewName);
-            person.Name = request.NewName;
+            var newName = request.NewName;
+
+            EnsurePersonExists(newName);
+            MoveCachedPersonImage(oldName, newName);
+
+            var oldItem = _libraryManager.GetPerson(oldName);
+            if (oldItem is not null)
+            {
+                _libraryManager.DeleteItem(oldItem, new DeleteOptions { DeleteFileLocation = false });
+            }
+
+            person.Name = newName;
             await db.SaveChangesAsync().ConfigureAwait(false);
 
             return Ok(new { OldName = oldName, NewName = person.Name });
@@ -344,7 +369,7 @@ public class PeopleToolkitController : ControllerBase
             }
 
             var name = person.Name;
-            DeleteCachedPersonImage(name);
+            DeletePersonEntityAndImage(name);
 
             var links = db.PeopleBaseItemMap.Where(m => m.PeopleId == personId);
             db.PeopleBaseItemMap.RemoveRange(links);
@@ -464,7 +489,7 @@ public class PeopleToolkitController : ControllerBase
                 }
 
                 deletedNames.Add(person.Name);
-                DeleteCachedPersonImage(person.Name);
+                DeletePersonEntityAndImage(person.Name);
 
                 var links = db.PeopleBaseItemMap.Where(m => m.PeopleId == id);
                 db.PeopleBaseItemMap.RemoveRange(links);
