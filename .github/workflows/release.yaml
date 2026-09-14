@@ -1,0 +1,41 @@
+name: '📦 Release Plugin'
+
+on:
+  release:
+    types:
+      - published
+  workflow_dispatch:
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Build
+        run: dotnet build --configuration Release Jellyfin.Plugin.PeopleToolkit
+
+      - name: Zip plugin
+        run: |
+          cd Jellyfin.Plugin.PeopleToolkit/bin/Release/net9.0
+          zip -r ../../../../peopletoolkit_${{ github.event.release.tag_name }}.zip Jellyfin.Plugin.PeopleToolkit.dll
+
+      - name: Upload zip to the release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: peopletoolkit_${{ github.event.release.tag_name }}.zip
+
+      - name: Generate/update manifest.json
+        uses: matthewstrasiotto/jellyfin-plugin-repo-action@dev-working
+        with:
+          ignorePrereleases: false
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          pagesBranch: manifest-release
+          pagesFile: manifest.json
