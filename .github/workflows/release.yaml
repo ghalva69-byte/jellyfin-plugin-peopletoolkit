@@ -36,10 +36,62 @@ jobs:
           files: peopletoolkit_${{ github.ref_name }}.zip
 
       - name: Generate/update manifest.json
-        uses: matthewstrasiotto/jellyfin-plugin-repo-action@dev-working
-        with:
-          ignorePrereleases: false
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-          repository: ${{ github.repository }}
-          pagesBranch: manifest-release
-          pagesFile: manifest.json
+        run: |
+          set -e
+
+          VERSION="${{ github.ref_name }}"
+          CHECKSUM=$(md5sum "peopletoolkit_${VERSION}.zip" | cut -d ' ' -f1 | tr '[:lower:]' '[:upper:]')
+          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          SOURCE_URL="https://github.com/${{ github.repository }}/releases/download/${VERSION}/peopletoolkit_${VERSION}.zip"
+
+          NAME=$(grep '^name:' build.yaml | sed -E 's/^name: *"?([^"]*)"?/\1/')
+          GUID=$(grep '^guid:' build.yaml | sed -E 's/^guid: *"?([^"]*)"?/\1/')
+          OVERVIEW=$(grep '^overview:' build.yaml | sed -E 's/^overview: *"?([^"]*)"?/\1/')
+          OWNER=$(grep '^owner:' build.yaml | sed -E 's/^owner: *"?([^"]*)"?/\1/')
+          CATEGORY=$(grep '^category:' build.yaml | sed -E 's/^category: *"?([^"]*)"?/\1/')
+          TARGET_ABI=$(grep '^targetAbi:' build.yaml | sed -E 's/^targetAbi: *"?([^"]*)"?/\1/')
+
+          git fetch origin manifest-release
+          git worktree add /tmp/manifest-release origin/manifest-release
+          cd /tmp/manifest-release
+
+          if [ ! -f manifest.json ]; then
+            echo "[]" > manifest.json
+          fi
+
+          jq --arg name "$NAME" \
+             --arg guid "$GUID" \
+             --arg overview "$OVERVIEW" \
+             --arg owner "$OWNER" \
+             --arg category "$CATEGORY" \
+             --arg version "$VERSION" \
+             --arg targetAbi "$TARGET_ABI" \
+             --arg sourceUrl "$SOURCE_URL" \
+             --arg checksum "$CHECKSUM" \
+             --arg timestamp "$TIMESTAMP" \
+             '
+             (map(select(.guid == $guid)) | length) as $exists |
+             if $exists == 0 then
+               . + [{
+                 category: $category,
+                 guid: $guid,
+                 name: $name,
+                 overview: $overview,
+                 owner: $owner,
+                 versions: [{version: $version, changelog: "", targetAbi: $targetAbi, sourceUrl: $sourceUrl, checksum: $checksum, timestamp: $timestamp}]
+               }]
+             else
+               map(
+                 if .guid == $guid then
+                   .versions = ([{version: $version, changelog: "", targetAbi: $targetAbi, sourceUrl: $sourceUrl, checksum: $checksum, timestamp: $timestamp}] + (.versions | map(select(.version != $version))))
+                 else . end
+               )
+             end
+             ' manifest.json > manifest.json.tmp
+          mv manifest.json.tmp manifest.json
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add manifest.json
+          git commit -m "Update manifest.json for $VERSION" || echo "No changes to commit"
+          git push origin HEAD:manifest-release
