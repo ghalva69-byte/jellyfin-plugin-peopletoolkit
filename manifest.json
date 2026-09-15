@@ -9,7 +9,7 @@
     "versions": [
       {
         "changelog": null,
-        "checksum": "",
+        "checksum": "2CA1F1E55C2718F3DD532CE36445576A",
         "sourceUrl": "https://github.com/ghalva69-byte/jellyfin-plugin-peopletoolkit/releases/download/1.0.0.0/peopletoolkit_1.0.0.0.zip",
         "targetAbi": "10.11.0.0",
         "timestamp": "2026-09-15T06:50:02Z",
