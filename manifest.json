@@ -8,12 +8,12 @@
     "owner": "ghalva69-byte",
     "versions": [
       {
-        "changelog": null,
-        "checksum": "2CA1F1E55C2718F3DD532CE36445576A",
-        "sourceUrl": "https://github.com/ghalva69-byte/jellyfin-plugin-peopletoolkit/releases/download/1.0.0.0/peopletoolkit_1.0.0.0.zip",
+        "version": "1.0.0.0",
+        "changelog": "",
         "targetAbi": "10.11.0.0",
-        "timestamp": "2026-09-15T06:50:02Z",
-        "version": "1.0.0.0"
+        "sourceUrl": "https://github.com/ghalva69-byte/jellyfin-plugin-peopletoolkit/releases/download/1.0.0.0/peopletoolkit_1.0.0.0.zip",
+        "checksum": "C489F8A183CF97FBFA5A85CBE9BB93C1",
+        "timestamp": "2026-09-15T07:20:28Z"
       }
     ]
   }
