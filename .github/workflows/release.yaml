@@ -1,9 +1,9 @@
 name: '📦 Release Plugin'
 
 on:
-  release:
-    types:
-      - published
+  push:
+    tags:
+      - '*'
   workflow_dispatch:
 
 jobs:
@@ -24,13 +24,13 @@ jobs:
       - name: Zip plugin
         run: |
           cd Jellyfin.Plugin.PeopleToolkit/bin/Release/net9.0
-          zip -r ../../../../peopletoolkit_${{ github.event.release.tag_name }}.zip Jellyfin.Plugin.PeopleToolkit.dll
+          zip -r ../../../../peopletoolkit_${{ github.ref_name }}.zip Jellyfin.Plugin.PeopleToolkit.dll
 
-      - name: Upload zip to the release
+      - name: Create release and upload zip
         uses: softprops/action-gh-release@v2
-        with: 
-          tag_name: ${{ github.event.release.tag_name }}
-          files: peopletoolkit_${{ github.event.release.tag_name }}.zip
+        with:
+          tag_name: ${{ github.ref_name }}
+          files: peopletoolkit_${{ github.ref_name }}.zip
 
       - name: Generate/update manifest.json
         uses: matthewstrasiotto/jellyfin-plugin-repo-action@dev-working
