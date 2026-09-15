@@ -1,1 +1,20 @@
-[]
+[
+  {
+    "category": "General",
+    "description": "Add, rename, delete and browse People on any Jellyfin item, including Photos and Videos that don't natively support People. Includes a gallery view and orphan cleanup tools.\nCompatible with Jellyfin 10.11.x only. NOT tested or supported on Jellyfin 12.0+, which introduced a new database schema — this plugin writes directly to internal tables and may break on newer versions.\n",
+    "guid": "6c2092ad-cc5e-412e-8b84-639f879db2e7",
+    "name": "People Toolkit",
+    "overview": "Manage People on any item, including Photos (Jellyfin 10.11.x only)",
+    "owner": "ghalva69-byte",
+    "versions": [
+      {
+        "changelog": null,
+        "checksum": "",
+        "sourceUrl": "https://github.com/ghalva69-byte/jellyfin-plugin-peopletoolkit/releases/download/1.0.0.0/peopletoolkit_1.0.0.0.zip",
+        "targetAbi": "10.11.0.0",
+        "timestamp": "2026-09-15T06:50:02Z",
+        "version": "1.0.0.0"
+      }
+    ]
+  }
+]
